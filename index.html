@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>World Clock</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      background-color: #0d1117;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 40px 60px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff55;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1em;
+      color: #ccc;
+    }
+
+    select {
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #222;
+      color: white;
+      box-shadow: 0 0 10px #00ffff33;
+    }
+
+    #location {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #aaa;
+    }
+
+    #clock {
+      font-size: 4em;
+      color: #ffffff;
+      text-shadow: 0 0 15px #0ff;
+      margin-bottom: 10px;
+    }
+
+    #date {
+      font-size: 1.5em;
+      color: #ccc;
+      text-shadow: 0 0 10px #ffffff22;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>World Clock</h1>
+
+    <label for="timezone">Select a Country:</label>
+    <select id="timezone">
+      <option value="Africa/Cairo">Cairo</option>
+      <option value="Europe/London">London</option>
+      <option value="Asia/Tokyo">Tokyo</option>
+      <option value="America/New_York">New York</option>
+      <option value="Asia/Dubai">Dubai</option>
+    </select>
+
+    <p id="location">Current Time in Cairo:</p>
+    <div id="clock"></div>
+    <div id="date"></div>
+  </div>
+
+  <script>
+    window.onload = function () {
+      let currentZone = 'Africa/Cairo';
+
+      function updateClock() {
+        const now = new Date();
+
+        const timeOptions = {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: currentZone
+        };
+
+        const dateOptions = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: currentZone
+        };
+
+        const timeString = now.toLocaleTimeString('en-GB', timeOptions);
+        const dateString = now.toLocaleDateString('en-GB', dateOptions);
+
+        document.getElementById('clock').textContent = timeString;
+        document.getElementById('date').textContent = dateString;
+
+        const city = document.querySelector('#timezone').selectedOptions[0].textContent;
+        document.getElementById('location').textContent = `Current Time in ${city}:`;
+      }
+
+      document.getElementById('timezone').addEventListener('change', (e) => {
+        currentZone = e.target.value;
+        updateClock();
+      });
+
+      setInterval(updateClock, 1000);
+      updateClock();
+    };
+  </script>
+</body>
+</html>
